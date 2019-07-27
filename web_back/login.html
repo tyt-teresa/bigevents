@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -23,13 +24,69 @@
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" class="input_txt" placeholder="邮箱/手机号">
-                <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input type="text" id="loginname" class="input_txt" placeholder="邮箱/手机号">
+                <input type="password" id="loginpwd" class="input_pass" placeholder="密码">
+                <input type="button" id="loginbtn" class="input_sub" value="登 录">
             </form>
         </div>
 
-    </div> 
+    </div>
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMsg">密码错误</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        // 1.设置提交点击事件
+        // 2.获取数据
+        // 3.调用ajax,访问接口
+        // 4.根据返回值给出提示
+        $('#loginbtn').click(function() {
+            var username = $('#loginname').val();
+            var userpwd = $('#loginpwd').val();
+            // console.log(uesname, usepwd);
+            if (username === '' || userpwd === '') {
+                $('#modalMsg').text('用户名密码不能为空');
+                $('#myModal').modal('show');
+                return;
+            }
+
+            $.ajax({
+                url: 'http:localhost:8000/admin/login',
+                type: 'post',
+                data: {
+                    user_name: username,
+                    password: userpwd,
+                },
+                success: function(result) {
+                    console.log(result);
+                    if (result.code === 200) {
+                        window.location.href = "index.html";
+                    } else {
+                        $('#modalMsg').text(result.msg);
+                        $('#myModal').modal('show');
+                    }
+
+                }
+            })
+        })
+    </script>
 
 </body>
 
