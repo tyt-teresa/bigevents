@@ -18,7 +18,7 @@
     <div class="sider">
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
-            <img src="images/2.jpg" alt="person" id="user_pic" user_pic>
+            <img src="images/2.jpg" alt="person" id="user_pic">
             <span>欢迎&nbsp;&nbsp;<em id="nickname">李思思</em></span>
             <b>管理员</b>
         </div>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="main" id="main_body">
-        <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0" scrolling="auto"></iframe>
+        <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" scrolling="auto"></iframe>
     </div>
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -131,7 +131,7 @@
             $('#myModal').modal('show');
             $('#alertLogout').click(function() {
                 $.post('http://localhost:8000/admin/logout', function(res) {
-                    console.log(res);
+                    // console.log(res);
                     if (res.code === 200) {
                         window.location.href = "login.html";
                     }
@@ -142,7 +142,11 @@
 
         // --------------------------------后台获取用户信息
         $.get('http://localhost:8000/admin/getuser', function(res) {
-            console.log(res);
+            // console.log(res);
+            if (res.code === 200) {
+                $('#nickname').text(res.data.nickname);
+                $('#user_pic').attr('src', res.data.user_pic);
+            }
 
         })
     </script>
